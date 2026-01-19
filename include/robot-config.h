@@ -16,6 +16,7 @@ extern motor intake1;
 extern motor intake2;
 extern motor intakemid;
 extern controller Controller;
-extern pneumatics did;
+extern pneumatics descorer;
 extern pneumatics tongue;
+extern pneumatics descorel;
 void  vexcodeInit( void );

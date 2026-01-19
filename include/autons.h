@@ -16,3 +16,5 @@ void tank_odom_test();
 void holonomic_odom_test();
 void lautonmid();
 void rautonmid();
+void lautonlong();
+void rauronlong();

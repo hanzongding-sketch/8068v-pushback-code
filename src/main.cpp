@@ -205,11 +205,14 @@ void autonomous(void) {
 /*                                                                           */
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
-void changePneumaticsdid() {
-    did.set( !did.value() );
+void changePneumaticsdescorer() {
+    descorer.set( !descorer.value() );
 }
 void changePneumaticstongue() {
     tongue.set( !tongue.value() );
+}
+void changePneumaticsdescorel() {
+    descorel.set( !descorel.value() );
 }
 void usercontrol(void) {
   // User control code here, inside the loop
@@ -242,7 +245,6 @@ void usercontrol(void) {
       else if(Controller.ButtonL2.pressing() ){//intake to hold
         intake1.spin(fwd,-100,percent);
         intake2.spin(fwd,0,percent);
-        intakemid.spin(fwd,-100,percent);
       }
     else{
       intake1.stop();
@@ -251,9 +253,11 @@ void usercontrol(void) {
     }
     chassis.control_arcade();
     wait(10, msec); // Sleep the task for a short amount of time to
-                    // prevent wasted resources.
-  }
-}
+                    // prevent wasted resources
+    Controller.ButtonA.pressed( changePneumaticsdescorel );
+    Controller.ButtonX.pressed( changePneumaticstongue );
+    Controller.ButtonY.pressed( changePneumaticsdescorer );
+}}
 
 //
 // Main will set up the competition functions and callbacks.
@@ -262,8 +266,9 @@ int main() {
   // Set up callbacks for autonomous and driver control periods.
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
-  Controller.ButtonA.pressed( changePneumaticsdid );
-   Controller.ButtonB.pressed( changePneumaticstongue );
+  Controller.ButtonA.pressed( changePneumaticsdescorel );
+  Controller.ButtonX.pressed( changePneumaticstongue );
+  Controller.ButtonY.pressed( changePneumaticsdescorer );
   // Run the pre-autonomous function.
   pre_auton();
 

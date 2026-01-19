@@ -9,19 +9,23 @@
  */
 //
 void intake(){
-  intake1.spin(fwd,-100,percent);
-  intake2.spin(fwd,-100,percent);
-  intakemid.spin(fwd,-100,percent);}
+    intake1.spin(fwd,-100,percent);
+    intake2.spin(fwd,0,percent);
+    intakemid.spin(fwd,-100,percent);}
 
 void outtakemid(){
-      intake1.spin(fwd,-100,percent);
-      intake2.spin(fwd,100,percent);
-      intakemid.spin(fwd,100,percent);
+        intake1.spin(fwd,-100,percent);
+        intake2.spin(fwd,-100,percent);
+        intakemid.spin(fwd,100,percent);
 }
 void outtakebottom(){
       intake1.spin(fwd,100,percent);
-      intakemid.spin(fwd,100,percent);
       intake2.spin(fwd,100,percent);
+      intakemid.spin(fwd,100,percent);}
+void outaketop(){
+      intake1.spin(fwd,-100,percent);
+      intakemid.spin(fwd,-100,percent);
+      intake2.spin(fwd,-100,percent);
 }
 void lautonmid(){
   intake();
@@ -43,7 +47,16 @@ void rautonmid(){
   wait(1000,msec);
   chassis.drive_distance(2);
 }
-
+void lautonlong(){
+  intake();
+  chassis.drive_distance(20);
+  chassis.left_swing_to_angle(10);
+  tongue.open();
+  wait(2000,msec);
+  chassis.drive_distance(4);
+  chassis.drive_distance(-10);
+  tongue.close();
+}
 
 void default_constants(){
   // Each constant set is in the form of (maxVoltage, kP, kI, kD, startI).
