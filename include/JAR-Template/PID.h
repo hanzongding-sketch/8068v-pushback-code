@@ -11,13 +11,13 @@ class PID
 {
 public:
   float error = 0.1;
-  float kp = 1;
+  float kp = 0.5;
   float ki = 0;
-  float kd = 1;
+  float kd = 3;
   float starti = 0;
-  float settle_error = 0;
-  float settle_time = 0;
-  float timeout = 0;
+  float settle_error = 1.5;
+  float settle_time = 300;
+  float timeout = 3000;
   float accumulated_error = 0;
   float previous_error = 0;
   float output = 0;
