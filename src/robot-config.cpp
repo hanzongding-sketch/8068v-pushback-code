@@ -21,8 +21,11 @@ motor RightTop = motor(PORT5, ratio6_1, false);
 motor intake1 = motor(PORT20, ratio6_1, true);
 motor intake2 = motor(PORT19, ratio6_1, true);  
 motor intakemid = motor(PORT18,ratio6_1, true);  
-pneumatics did =  pneumatics(Brain.ThreeWirePort.A);
-pneumatics tongue = pneumatics(Brain.ThreeWirePort.B);
+pneumatics descorel =  pneumatics(Brain.ThreeWirePort.A);
+pneumatics descorer =  pneumatics(Brain.ThreeWirePort.B);
+pneumatics tongue = pneumatics(Brain.ThreeWirePort.C);
+optical coloursort = optical(PORT10);
+inertial pi = inertial(PORT15);
 void vexcodeInit( void ) {
   // nothing to initialize
 }

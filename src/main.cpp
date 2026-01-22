@@ -50,7 +50,7 @@ motor_group(LeftBack,LeftFront,LeftTop),
 motor_group(Rightront,RightBack,RightTop),
 
 //Specify the PORT NUMBER of your inertial sensor, in PORT format (i.e. "PORT1", not simply "1"):
-PORT18,
+PORT15,
 
 //Input your wheel diameter. (4" omnis are actually closer to 4.125"):
 3.25,
@@ -119,7 +119,7 @@ void pre_auton() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
   default_constants();
-
+  coloursort.setLightPower(100, percent);   
   while(!auto_started){
     Brain.Screen.clearScreen();
     Brain.Screen.printAt(5, 120, "Selected Auton:");
@@ -205,11 +205,14 @@ void autonomous(void) {
 /*                                                                           */
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
-void changePneumaticsdid() {
-    did.set( !did.value() );
+void changePneumaticsdescorer() {
+    descorer.set( !descorer.value() );
 }
 void changePneumaticstongue() {
     tongue.set( !tongue.value() );
+}
+void changePneumaticsdescorel() {
+    descorel.set( !descorel.value() );
 }
 void usercontrol(void) {
   // User control code here, inside the loop
@@ -223,35 +226,62 @@ void usercontrol(void) {
     // ........................................................................
     //Replace this line with chassis.control_tank(); for tank drive 
     //or chassis.control_holonomic(); for holo drive.
-    
-    if(Controller.ButtonR2.pressing()){//intake to score top
-      intake1.spin(fwd,-100,percent);
-      intakemid.spin(fwd,-100,percent);
-      intake2.spin(fwd,-100,percent);
-      }
-      else if(Controller.ButtonR1.pressing()){//outake
-      intake1.spin(fwd,100,percent);
-      intake2.spin(fwd,100,percent);
-      intakemid.spin(fwd,100,percent);
-      }
-      else if(Controller.ButtonL1.pressing() ){//intake to score mid
-        intake1.spin(fwd,-100,percent);
-        intake2.spin(fwd,-100,percent);
-        intakemid.spin(fwd,100,percent);
-      }
-      else if(Controller.ButtonL2.pressing() ){//intake to hold
-        intake1.spin(fwd,-100,percent);
-        intake2.spin(fwd,0,percent);
-        intakemid.spin(fwd,-100,percent);
-      }
-    else{
-      intake1.stop();
-      intake2.stop();
-      intakemid.stop();
-    }
+   if (Controller.ButtonR2.pressing()) {
+            // If Blue is detected while scoring Top, perform the Mid command logic
+            if (coloursort.isNearObject() && coloursort.color() == vex::blue) {
+                while (coloursort.isNearObject() && coloursort.color() == vex::blue) {
+                    intake1.spin(fwd, -100, percent);
+                    intake2.spin(fwd, -100, percent);
+                    intakemid.spin(fwd, 100, percent); //sort thorugh mid scoring
+                    chassis.control_arcade();
+                }
+            } else {
+                // Normal Scoring Top
+                intake1.spin(fwd, -100, percent);
+                intake2.spin(fwd, -100, percent);
+                intakemid.spin(fwd, -100, percent);
+            }
+        } 
+        
+        
+        else if (Controller.ButtonL1.pressing()) {
+            // If Blue is detected while scoring Mid, perform the Top command logic
+            if (coloursort.isNearObject() && coloursort.color() == vex::blue) {
+                while (coloursort.isNearObject() && coloursort.color() == vex::blue) {
+                    intake1.spin(fwd, -100, percent);
+                    intake2.spin(fwd, -100, percent);
+                    intakemid.spin(fwd, -100, percent); 
+                    chassis.control_arcade();
+                }
+            } else {
+                //Scoring Mid
+                intake1.spin(fwd, -100, percent);
+                intake2.spin(fwd, -100, percent);
+                intakemid.spin(fwd, 100, percent);
+            }
+        }
+
+        // Outtake 
+        else if (Controller.ButtonR1.pressing()) {
+            intake1.spin(fwd, 100, percent);
+            intake2.spin(fwd, 100, percent);
+            intakemid.spin(fwd, 100, percent);
+        }
+
+        // Intake to Hoard 
+        else if (Controller.ButtonL2.pressing()) {
+            intake1.spin(fwd, -100, percent);
+        } 
+
+        // Stop running
+        else {
+            intake1.stop();
+            intake2.stop();
+            intakemid.stop();
+        }
     chassis.control_arcade();
     wait(10, msec); // Sleep the task for a short amount of time to
-                    // prevent wasted resources.
+                    // prevent wasted resources
   }
 }
 
@@ -262,8 +292,9 @@ int main() {
   // Set up callbacks for autonomous and driver control periods.
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
-  Controller.ButtonA.pressed( changePneumaticsdid );
-   Controller.ButtonB.pressed( changePneumaticstongue );
+  Controller.ButtonA.pressed( changePneumaticsdescorel );
+  Controller.ButtonX.pressed( changePneumaticstongue );
+  Controller.ButtonY.pressed( changePneumaticsdescorer );
   // Run the pre-autonomous function.
   pre_auton();
 
